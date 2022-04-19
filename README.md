@@ -1,5 +1,8 @@
+## designファイルのビルド
 goa gen goa-sample/design
 goa example goa-sample/design
+
+## docker起動
 docker-compose build --no-cache
 docker-compose up -d
 

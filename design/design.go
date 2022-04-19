@@ -9,11 +9,12 @@ var _ = API("goa sample", func() {
 
     // Server はクライアントのリクエストを受け付ける単一のプロセスを記述します
     // DSLは、サーバーがホストする一連のサービスとホストの詳細を定義します
-		Server("goa_sample", func() {
+		Server("controller", func() {
       Description("goa hosts the Calculator Service.")
 
-			// // このサーバーによってホストされているサービスを列挙します
-			// Services("goa-sample")
+			// このサーバーによってホストされているサービスを列挙します
+			Services("user_controller")
+			// Services("todo_controller")
 
 			// ホストとそのトランスポート URL を列挙します。
 			Host("localhost", func() {

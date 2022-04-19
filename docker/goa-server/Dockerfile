@@ -4,7 +4,7 @@ COPY go.mod go.sum /
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/goa_sample
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/controller
 
 FROM alpine:3.10.1
 WORKDIR /app
