@@ -58,6 +58,7 @@ var _ = Service("user_controller", func() {
 			Body(func() {
 				Attribute("name")
 				Attribute("email")
+				//TODO: 必須設定
 				// Required("name")
 			})
 
@@ -79,6 +80,7 @@ var _ = Service("user_controller", func() {
 			Body(func() {
 				Attribute("name")
 				Attribute("email")
+				//TODO: 必須設定
 				// Required("name")
 			})
 

@@ -7,6 +7,8 @@ var _ = API("goa sample", func() {
     Title("goaサンプル")
     Description("これはgoaを使ったサンプルのAPIです")
 
+		//TODO: コントローラーをcotrollerフォルダに移動したい
+
     // Server はクライアントのリクエストを受け付ける単一のプロセスを記述します
     // DSLは、サーバーがホストする一連のサービスとホストの詳細を定義します
 		Server("controller", func() {
