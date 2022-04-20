@@ -1,13 +1,14 @@
-## designファイルのビルド
+# 環境構築手順
+1. goaのファイル自動生成を実行
+```bash
 goa gen goa-sample/design
 goa example goa-sample/design
+```
 
-go build ./cmd/controller
-./controller
-
-## docker起動
-docker-compose build --no-cache
+2. dockerの起動
+```bash
 docker-compose up -d
+```
 
 ## アクセス
 ### goa-sample API
@@ -21,3 +22,7 @@ http://localhost:9000
 
 ### mailcatcher
 http://localhost:9000
+
+## APIへの接続について
+rest.httpファイルにVSCodeのREST拡張仕様のファイルを用意してます
+そちらをお使いください
