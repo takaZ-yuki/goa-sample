@@ -1,8 +1,11 @@
 package goasample
 
 import (
+	"goa-sample/src/database"
+	"goa-sample/src/domain/model"
 	"context"
 	usercontroller "goa-sample/gen/user_controller"
+	"github.com/jinzhu/copier"
 	"log"
 )
 
@@ -20,16 +23,32 @@ func NewUserController(logger *log.Logger) usercontroller.Service {
 // ユーザ一覧の検索
 func (s *userControllersrvc) GetUsers(ctx context.Context) (res []*usercontroller.User, err error) {
 	s.logger.Print("userController.GetUsers")
-	//TODO: ロジックを実装
-	return
+	// ユーザー一覧を検索
+	users := []model.User{}
+	database.DB.Find(&users)
+
+	// 返還用オブジェクト作成
+	result_users := []*usercontroller.User{}
+	// 検索結果を返還用オブジェクトへマッピング
+	copier.Copy(&result_users, &users)
+
+	return result_users, nil
 }
 
 // ユーザ検索
 func (s *userControllersrvc) GetUser(ctx context.Context, p *usercontroller.GetUserPayload) (res *usercontroller.User, err error) {
-	res = &usercontroller.User{}
 	s.logger.Print("userController.GetUser")
-	//TODO: ロジックを実装
-	return
+
+	user := model.User{Id: p.ID}
+	// ユーザー検索
+	database.DB.Take(&user)
+
+	// 返還用オブジェクト作成
+	res = &usercontroller.User{}
+	// 検索結果を返還用オブジェクトへマッピング
+	copier.Copy(&res, &user)
+
+	return res, nil
 }
 
 // ユーザ更新

@@ -13,25 +13,28 @@ services:
       - "8088:8088"
     tty: true
     restart: always
+    volumes:
+      - .:/app
     depends_on:
       - go-mysql
 
   go-mysql:
+    image: mysql:8.0.21
     container_name: go-mysql
-    build:
-      context: .
-      dockerfile: ./docker/mysql/Dockerfile
     ports:
       - "3306:3306"
-    volumes:
-      # gorm can struct->automigrate as well
-      - ./mysql/init:/docker-entrypoint-initdb.d
-      - goa-mysql-volume:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: sampledb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: 'webuser'
+      MYSQL_PASSWORD: 'webpass'
+      MYSQL_ROOT_PASSWORD: 'pass'
+      MYSQL_DATABASE: 'go_mysql8_development'
+    # MySQLの文字コードを指定する
+    volumes:
+      # DBデータの永続化
+      - goa-mysql-volume:/var/lib/mysql
+      # MySQL起動時にDBを作成し、初期データの投入する
+      - "./Docker/mysql/sql:/docker-entrypoint-initdb.d"
+      - "./Docker/mysql/my.cnf:/etc/mysql/conf.d/etc-mysql.cnf"
 
   swagger-ui:
     image: swaggerapi/swagger-ui

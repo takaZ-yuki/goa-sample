@@ -1,3 +1,2 @@
-gen*
-cmd*
+tmp*
 .vscode*

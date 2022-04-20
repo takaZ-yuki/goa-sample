@@ -1,0 +1,670 @@
+swagger: "2.0"
+info:
+  title: goaサンプル
+  description: これはgoaを使ったサンプルのAPIです
+  version: ""
+host: 0.0.0.0:8088
+consumes:
+- application/json
+- application/xml
+- application/gob
+produces:
+- application/json
+- application/xml
+- application/gob
+paths:
+  /users:
+    get:
+      tags:
+      - user_controller
+      summary: GetUsers user_controller
+      description: ユーザ一覧の検索
+      operationId: user_controller#GetUsers
+      responses:
+        "200":
+          description: OK response.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserResponse'
+        "400":
+          description: Bad Request response.
+          schema:
+            $ref: '#/definitions/UserControllerGetUsersBadRequestResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/UserControllerGetUsersNotFoundResponseBody'
+      schemes:
+      - http
+    post:
+      tags:
+      - user_controller
+      summary: CreateUser user_controller
+      description: ユーザ登録
+      operationId: user_controller#CreateUser
+      parameters:
+      - name: object
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              description: Eメール
+              example: xxxxxx@xxxx.xxx
+              pattern: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
+              maxLength: 255
+            name:
+              type: string
+              description: ユーザー名
+              example: John Lennon
+              maxLength: 20
+      responses:
+        "204":
+          description: No Content response.
+        "400":
+          description: Bad Request response.
+          schema:
+            $ref: '#/definitions/UserControllerCreateUserBadRequestResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/UserControllerCreateUserNotFoundResponseBody'
+      schemes:
+      - http
+  /users/{id}:
+    get:
+      tags:
+      - user_controller
+      summary: GetUser user_controller
+      description: ユーザ検索
+      operationId: user_controller#GetUser
+      parameters:
+      - name: id
+        in: path
+        description: ユーザーID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK response.
+          schema:
+            $ref: '#/definitions/UserControllerGetUserResponseBody'
+        "400":
+          description: Bad Request response.
+          schema:
+            $ref: '#/definitions/UserControllerGetUserBadRequestResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/UserControllerGetUserNotFoundResponseBody'
+      schemes:
+      - http
+    put:
+      tags:
+      - user_controller
+      summary: UpdateUser user_controller
+      description: ユーザ更新
+      operationId: user_controller#UpdateUser
+      parameters:
+      - name: id
+        in: path
+        description: ユーザーID
+        required: true
+        type: integer
+      - name: object
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              description: Eメール
+              example: xxxxxx@xxxx.xxx
+              pattern: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
+              maxLength: 255
+            name:
+              type: string
+              description: ユーザー名
+              example: John Lennon
+              maxLength: 20
+      responses:
+        "204":
+          description: No Content response.
+        "400":
+          description: Bad Request response.
+          schema:
+            $ref: '#/definitions/UserControllerUpdateUserBadRequestResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/UserControllerUpdateUserNotFoundResponseBody'
+      schemes:
+      - http
+    delete:
+      tags:
+      - user_controller
+      summary: DeleteUser user_controller
+      description: ユーザ削除
+      operationId: user_controller#DeleteUser
+      parameters:
+      - name: id
+        in: path
+        description: ユーザーID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content response.
+        "400":
+          description: Bad Request response.
+          schema:
+            $ref: '#/definitions/UserControllerDeleteUserBadRequestResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/UserControllerDeleteUserNotFoundResponseBody'
+      schemes:
+      - http
+definitions:
+  UserControllerCreateUserBadRequestResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: CreateUser_BadRequest_Response_Body result type (default view)
+    example:
+      fault: false
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerCreateUserNotFoundResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: false
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: true
+    description: CreateUser_NotFound_Response_Body result type (default view)
+    example:
+      fault: false
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerDeleteUserBadRequestResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: true
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: true
+    description: DeleteUser_BadRequest_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: true
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerDeleteUserNotFoundResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: false
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: true
+    description: DeleteUser_NotFound_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: true
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerGetUserBadRequestResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: GetUser_BadRequest_Response_Body result type (default view)
+    example:
+      fault: false
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: true
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerGetUserNotFoundResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: false
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: GetUser_NotFound_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: true
+      timeout: true
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerGetUserResponseBody:
+    title: UserControllerGetUserResponseBody
+    type: object
+    properties:
+      email:
+        type: string
+        description: Eメール
+        example: xxxxxx@xxxx.xxx
+        pattern: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
+        maxLength: 255
+      id:
+        type: integer
+        description: ユーザーID
+        example: 7704012424067545644
+        format: int64
+      name:
+        type: string
+        description: ユーザー名
+        example: John Lennon
+        maxLength: 20
+    example:
+      email: xxxxxx@xxxx.xxx
+      id: 8093784523514649816
+      name: John Lennon
+  UserControllerGetUsersBadRequestResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: GetUsers_BadRequest_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerGetUsersNotFoundResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: GetUsers_NotFound_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: true
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerUpdateUserBadRequestResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: false
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: true
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: true
+    description: UpdateUser_BadRequest_Response_Body result type (default view)
+    example:
+      fault: true
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: true
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserControllerUpdateUserNotFoundResponseBody:
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+    properties:
+      fault:
+        type: boolean
+        description: Is the error a server-side fault?
+        example: true
+      id:
+        type: string
+        description: ID is a unique identifier for this particular occurrence of the
+          problem.
+        example: 123abc
+      message:
+        type: string
+        description: Message is a human-readable explanation specific to this occurrence
+          of the problem.
+        example: parameter 'p' must be an integer
+      name:
+        type: string
+        description: Name is the name of this class of errors.
+        example: bad_request
+      temporary:
+        type: boolean
+        description: Is the error temporary?
+        example: false
+      timeout:
+        type: boolean
+        description: Is the error a timeout?
+        example: false
+    description: UpdateUser_NotFound_Response_Body result type (default view)
+    example:
+      fault: false
+      id: 123abc
+      message: parameter 'p' must be an integer
+      name: bad_request
+      temporary: false
+      timeout: false
+    required:
+    - name
+    - id
+    - message
+    - temporary
+    - timeout
+    - fault
+  UserResponse:
+    title: UserResponse
+    type: object
+    properties:
+      email:
+        type: string
+        description: Eメール
+        example: xxxxxx@xxxx.xxx
+        pattern: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
+        maxLength: 255
+      id:
+        type: integer
+        description: ユーザーID
+        example: 6553280026724479689
+        format: int64
+      name:
+        type: string
+        description: ユーザー名
+        example: John Lennon
+        maxLength: 20
+    example:
+      email: xxxxxx@xxxx.xxx
+      id: 8053119788711269625
+      name: John Lennon
