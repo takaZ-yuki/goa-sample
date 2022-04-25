@@ -6,6 +6,7 @@ import . "goa.design/goa/v3/dsl"
 var _ = API("goa sample", func() {
     Title("goaサンプル")
     Description("これはgoaを使ったサンプルのAPIです")
+		Version("1.0")
 
 		//TODO: コントローラーをcotrollerフォルダに移動したい
 
